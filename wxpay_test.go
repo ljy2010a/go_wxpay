@@ -24,7 +24,7 @@ func TestUnifiedorders(t *testing.T) {
 	// 交易类型
 	u.Trade_type = "NATIVE"
 	// 商品ID
-	u.product_id = "xxxxxxxxx"
+	u.Product_id = "xxxxxxxxx"
 
 	//====== 选填
 	// 设备号

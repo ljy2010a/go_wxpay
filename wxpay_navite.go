@@ -32,7 +32,7 @@ type Unifiedorder struct {
 	// 交易类型	trade_type	是	String(16)	JSAPI	取值如下：JSAPI，NATIVE，APP，详细说明见参数规定
 	Trade_type string `xml:"trade_type"`
 	// 商品ID	product_id	否	String(32)	12235413214070356458058	trade_type=NATIVE，此参数必传。此id为二维码中包含的商品ID，商户自行定义。
-	product_id string `xml:"product_id"`
+	Product_id string `xml:"product_id"`
 	// 设备号	device_info	否	String(32)	013467007045764	终端设备号(门店号或收银设备ID)，注意：PC网页或公众号内支付请传"WEB"
 	Device_info string `xml:"device_info"`
 	// 商品详情	detail	否	String(8192)	Ipad mini  16G  白色	商品名称明细列表

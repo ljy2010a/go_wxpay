@@ -72,6 +72,18 @@ func NewNaviteNotify(b []byte, wxPayConfig *WxPayConfig) (*NaviteNotify, bool, e
 	return n, isSignValid, nil
 }
 
+type NotyfyCallback struct {
+	Return_code string
+	Return_msg  string
+}
+
+func (n *NotyfyCallback) ToXML() string {
+	return fmt.Sprintf(
+		"<xml><return_code>%v</return_code><return_msg>%v</return_msg></xml>",
+		n.Return_code,
+		n.Return_msg)
+}
+
 func (n *NaviteNotify) CheckSign(wxPayConfig *WxPayConfig) bool {
 
 	p := Kvpairs{}

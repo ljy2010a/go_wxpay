@@ -3,9 +3,9 @@ package demo
 import (
 	"fmt"
 	wxpay "github.com/ljy2010a/go_wxpay"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"time"
 )
 
 type Result struct {
@@ -15,19 +15,18 @@ type Result struct {
 }
 
 func HttpRespE(w http.ResponseWriter, code int, msg string) {
-	w.Write(b)
 	http.Error(w, msg, code)
 }
 
 func HttpResp(w http.ResponseWriter, msg string) {
-	w.Write(b)
+	w.Write([]byte(msg))
 }
 
 //发送请求
 func WxPayNavite(w http.ResponseWriter, r *http.Request) {
 	log.Println("WxPayNavite Begin")
 
-	u := NewUnifiedorder(GWxPayConfig)
+	u := wxpay.NewUnifiedorder(wxpay.GWxPayConfig)
 	// 随机字符串
 	u.Nonce_str = wxpay.Md5String(wxpay.NewOrderNo())
 	// 商品描述
@@ -43,7 +42,7 @@ func WxPayNavite(w http.ResponseWriter, r *http.Request) {
 	// 交易类型
 	u.Trade_type = "NATIVE"
 	// 商品ID
-	u.product_id = "xxxxxxxxx"
+	u.Product_id = "xxxxxxxxx"
 
 	//====== 选填
 	// 设备号
@@ -65,7 +64,7 @@ func WxPayNavite(w http.ResponseWriter, r *http.Request) {
 	// 用户标识
 	// u.Openid = "xxxxxxxxx"
 
-	uresp, err := u.TakeOrder(GWxPayConfig)
+	uresp, err := u.TakeOrder(wxpay.GWxPayConfig)
 	if err != nil {
 		HttpRespE(w, 500, err.Error())
 		return
@@ -78,7 +77,28 @@ func WxPayNavite(w http.ResponseWriter, r *http.Request) {
 func WxPayNaviteNotify(w http.ResponseWriter, r *http.Request) {
 	log.Println("WxPayNaviteNotify Begin")
 
-	bodyByte, _ := ioutil.ReadAll(r.Body)
+	n := &wxpay.NotyfyCallback{}
+	n.Return_code = "FAIL"
+	defer func() {
+		log.Println("WxPayNaviteNotify End")
+		log.Println("NotyfyCallback to WX : %v", n.ToXML())
+		w.Header().Set("Content-Type", "application/xml ")
+		fmt.Fprint(w, n.ToXML())
+	}()
 
+	bodyByte, _ := ioutil.ReadAll(r.Body)
+	u, sbool, err := wxpay.NewNaviteNotify(bodyByte, wxpay.GWxPayConfig)
+	if err != nil {
+		log.Println("解析微信请求错误 : ", err)
+		return
+	}
+	if !sbool {
+		log.Println("验证微信签名错误 : ", err)
+		return
+	}
+
+	log.Println("在这处理订单")
+	log.Println("Out_trade_no : ", u.Out_trade_no)
+	n.Return_code = "SUCCESS"
 	return
 }
