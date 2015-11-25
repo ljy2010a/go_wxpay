@@ -25,6 +25,10 @@ func md5String(str string) string {
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
 
+func Md5String(str string) string {
+	return md5String(str)
+}
+
 /**
  * 验证签名
  * @param $prestr 需要签名的字符串

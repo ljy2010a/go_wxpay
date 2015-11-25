@@ -57,6 +57,8 @@ type WxPayConfig struct {
 	 * @var int
 	 */
 	REPORT_LEVENL int64
+	//通知url  统一配置
+	Notify_url string
 }
 
 var GWxPayConfig = &WxPayConfig{
@@ -69,4 +71,5 @@ var GWxPayConfig = &WxPayConfig{
 	CURL_PROXY_HOST: "0.0.0.0",
 	CURL_PROXY_PORT: 0,
 	REPORT_LEVENL:   1,
+	Notify_url:      "www.baidu.com",
 }
