@@ -1,4 +1,4 @@
-package wxpay
+package go_wxpay
 
 import (
 	"testing"

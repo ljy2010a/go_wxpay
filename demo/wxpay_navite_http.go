@@ -22,7 +22,7 @@ func HttpResp(w http.ResponseWriter, msg string) {
 	w.Write([]byte(msg))
 }
 
-//发送请求
+// 发送请求
 func WxPayNavite(w http.ResponseWriter, r *http.Request) {
 	log.Println("WxPayNavite Begin")
 
